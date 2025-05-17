@@ -3,6 +3,8 @@ package com.dauphine.jobnest.services;
 import com.dauphine.jobnest.models.Job;
 import com.dauphine.jobnest.repositories.JobRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,5 +18,10 @@ public class JobService {
 
     public List<Job> getAllJobs() {
         return jobRepository.findAll();
+    }
+
+    public Job createJob(Job job) {
+        job.setPostedAt(LocalDateTime.now());
+        return jobRepository.save(job);
     }
 }
