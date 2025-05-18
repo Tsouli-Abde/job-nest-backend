@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/jobs")
@@ -31,4 +32,12 @@ public class JobController {
         Job savedJob = jobService.createJob(job);
         return ResponseEntity.ok(savedJob);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Job> getJobById(@PathVariable UUID id) {
+        return jobService.getJobById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
