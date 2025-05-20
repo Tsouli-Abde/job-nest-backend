@@ -1,6 +1,9 @@
 package com.dauphine.jobnest.models;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,7 +29,18 @@ public class Applicant {
     @Column(columnDefinition = "text")
     private String skills;
 
-    public Applicant() {}
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
+    private List<Application> applications = new ArrayList<>();
+
+    public Applicant() {
+    }
+
     public UUID getId() {
         return id;
     }
@@ -74,5 +88,16 @@ public class Applicant {
     public void setSkills(String skills) {
         this.skills = skills;
     }
-}
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+}

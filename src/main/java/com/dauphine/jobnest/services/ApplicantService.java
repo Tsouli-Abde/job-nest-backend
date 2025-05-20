@@ -4,6 +4,8 @@ import com.dauphine.jobnest.models.Applicant;
 import com.dauphine.jobnest.repositories.ApplicantRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ApplicantService {
@@ -16,6 +18,18 @@ public class ApplicantService {
 
     public List<Applicant> getAllApplicants() {
         return applicantRepository.findAll();
+    }
+
+    public Applicant save(Applicant applicant) {
+        return applicantRepository.save(applicant);
+    }
+
+    public Optional<Applicant> findById(UUID id) {
+        return applicantRepository.findById(id);
+    }
+
+    public Applicant findByUsername(String username) {
+        return applicantRepository.findByUsername(username);
     }
 }
 
