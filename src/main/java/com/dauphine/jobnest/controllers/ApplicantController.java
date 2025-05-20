@@ -37,9 +37,9 @@ public class ApplicantController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Applicant user = applicantService.findByUsername(request.getUsername());
-        if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return ResponseEntity.ok(user);
+        Applicant applicant = applicantService.findByUsername(request.getUsername());
+        if (applicant != null && passwordEncoder.matches(request.getPassword(), applicant.getPassword())) {
+            return ResponseEntity.ok(applicant);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
