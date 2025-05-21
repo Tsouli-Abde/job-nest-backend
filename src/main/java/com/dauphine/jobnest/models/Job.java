@@ -42,6 +42,10 @@ public class Job {
     @Column(name = "posted_at")
     private LocalDateTime postedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     public Job() {}
     public UUID getId() {
         return id;
@@ -129,6 +133,14 @@ public class Job {
 
     public void setPostedAt(LocalDateTime postedAt) {
         this.postedAt = postedAt;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }
 
