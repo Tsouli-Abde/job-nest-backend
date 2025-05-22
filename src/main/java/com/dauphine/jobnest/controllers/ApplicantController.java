@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/applicants")
@@ -43,6 +44,29 @@ public class ApplicantController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Applicant> updateApplicant(@PathVariable UUID id, @RequestBody Applicant updatedApplicant) {
+        Applicant existing = applicantService.findById(id);
+        if (existing == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (updatedApplicant.getFirstName() != null)
+            existing.setFirstName(updatedApplicant.getFirstName());
+        if (updatedApplicant.getLastName() != null)
+            existing.setLastName(updatedApplicant.getLastName());
+        if (updatedApplicant.getEmail() != null)
+            existing.setEmail(updatedApplicant.getEmail());
+        if (updatedApplicant.getPhoneNumber() != null)
+            existing.setPhoneNumber(updatedApplicant.getPhoneNumber());
+        if (updatedApplicant.getSkills() != null)
+            existing.setSkills(updatedApplicant.getSkills());
+        if (updatedApplicant.getUsername() != null)
+            existing.setUsername(updatedApplicant.getUsername());
+
+        return ResponseEntity.ok(applicantService.save(existing));
     }
 
 }

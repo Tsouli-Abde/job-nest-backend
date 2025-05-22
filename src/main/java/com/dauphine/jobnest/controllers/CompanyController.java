@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/companies")
@@ -41,5 +42,20 @@ public class CompanyController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Company> updateCompany(@PathVariable UUID id, @RequestBody Company updatedCompany) {
+        Company existing = companyService.findById(id);
+        if (existing == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        existing.setCompanyName(updatedCompany.getCompanyName());
+        existing.setEmail(updatedCompany.getEmail());
+        existing.setPhoneNumber(updatedCompany.getPhoneNumber());
+        existing.setIndustry(updatedCompany.getIndustry());
+
+        return ResponseEntity.ok(companyService.save(existing));
     }
 }
