@@ -33,6 +33,17 @@ public class JobController {
         return ResponseEntity.ok(savedJob);
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<Job>> searchJobs(
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String experienceLevel,
+            @RequestParam(required = false) Integer salaryMin,
+            @RequestParam(required = false) Integer salaryMax) {
+        List<Job> results = jobService.searchJobs(location, type, experienceLevel, salaryMin, salaryMax);
+        return ResponseEntity.ok(results);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Job> getJobById(@PathVariable UUID id) {
         return jobService.getJobById(id)

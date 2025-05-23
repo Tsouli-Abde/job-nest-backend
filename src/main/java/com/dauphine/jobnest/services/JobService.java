@@ -28,7 +28,11 @@ public class JobService {
     }
 
     public Optional<Job> getJobById(UUID id) {
-    return jobRepository.findById(id);
+        return jobRepository.findById(id);
     }
 
+    public List<Job> searchJobs(String location, String type, String experienceLevel, Integer salaryMin,
+            Integer salaryMax) {
+        return jobRepository.findByFilters(location, type, experienceLevel, salaryMin, salaryMax);
+    }
 }
