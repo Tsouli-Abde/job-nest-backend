@@ -23,4 +23,9 @@ public class ApplicationService {
     public List<Application> getByApplicantId(UUID applicantId) {
         return applicationRepository.findByApplicantId(applicantId);
     }
+
+    public boolean existsByApplicantIdAndJobId(UUID applicantId, UUID jobId) {
+        return applicationRepository.existsByApplicantIdAndJobId(applicantId, jobId);
+    }
+    
 }

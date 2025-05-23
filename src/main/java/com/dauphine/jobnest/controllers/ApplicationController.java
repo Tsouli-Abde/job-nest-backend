@@ -57,4 +57,13 @@ public class ApplicationController {
         List<Application> applications = applicationService.getByApplicantId(applicantId);
         return ResponseEntity.ok(applications);
     }
+
+    @GetMapping("/has-applied")
+    public ResponseEntity<Boolean> hasAlreadyApplied(
+            @RequestParam UUID applicantId,
+            @RequestParam UUID jobId) {
+        boolean exists = applicationService.existsByApplicantIdAndJobId(applicantId, jobId);
+        return ResponseEntity.ok(exists);
+    }
+
 }
