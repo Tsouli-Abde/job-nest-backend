@@ -14,11 +14,11 @@ public class Application {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "applicant_id")
+    @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
 
     @ManyToOne
-    @JoinColumn(name = "job_id")
+    @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
     @Column(name = "cover_letter", columnDefinition = "text")
