@@ -1,5 +1,6 @@
 package com.dauphine.jobnest.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class Applicant {
     private String password;
 
     @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Application> applications = new ArrayList<>();
 
     public Applicant() {

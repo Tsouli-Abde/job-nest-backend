@@ -1,5 +1,6 @@
 package com.dauphine.jobnest.controllers;
 
+import com.dauphine.jobnest.dto.CompanyUpdate;
 import com.dauphine.jobnest.dto.LoginRequest;
 import com.dauphine.jobnest.models.Company;
 import com.dauphine.jobnest.services.CompanyService;
@@ -7,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+import com.dauphine.jobnest.models.Job;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,18 +45,29 @@ public class CompanyController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Company> updateCompany(@PathVariable UUID id, @RequestBody Company updatedCompany) {
+    @PutMapping(value = "/{id}", consumes = "application/json")
+    public ResponseEntity<Company> updateCompany(@PathVariable UUID id, @RequestBody CompanyUpdate dto) {
         Company existing = companyService.findById(id);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
 
-        existing.setCompanyName(updatedCompany.getCompanyName());
-        existing.setEmail(updatedCompany.getEmail());
-        existing.setPhoneNumber(updatedCompany.getPhoneNumber());
-        existing.setIndustry(updatedCompany.getIndustry());
+        if (dto.companyName != null) existing.setCompanyName(dto.companyName);
+        if (dto.email != null) existing.setEmail(dto.email);
+        if (dto.phoneNumber != null) existing.setPhoneNumber(dto.phoneNumber);
+        if (dto.industry != null) existing.setIndustry(dto.industry);
+        if (dto.username != null) existing.setUsername(dto.username);
+        if (dto.password != null) existing.setPassword(dto.password);
 
         return ResponseEntity.ok(companyService.save(existing));
+    }
+
+    @GetMapping("/{companyId}/jobs")
+    public ResponseEntity<List<Job>> getCompanyJobs(@PathVariable UUID companyId) {
+        Company company = companyService.findById(companyId);
+        if (company == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(company.getJobs());
     }
 }

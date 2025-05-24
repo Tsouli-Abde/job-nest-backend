@@ -1,5 +1,7 @@
 package com.dauphine.jobnest.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,10 +17,12 @@ public class Application {
 
     @ManyToOne
     @JoinColumn(name = "applicant_id", nullable = false)
+    @JsonManagedReference
     private Applicant applicant;
 
     @ManyToOne
     @JoinColumn(name = "job_id", nullable = false)
+    @JsonBackReference
     private Job job;
 
     @Column(name = "cover_letter", columnDefinition = "text")

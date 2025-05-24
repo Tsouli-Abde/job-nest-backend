@@ -1,6 +1,10 @@
 package com.dauphine.jobnest.controllers;
 
+import com.dauphine.jobnest.dto.JobRequest;
+import com.dauphine.jobnest.dto.JobResponse;
+import com.dauphine.jobnest.models.Company;
 import com.dauphine.jobnest.models.Job;
+import com.dauphine.jobnest.services.CompanyService;
 import com.dauphine.jobnest.services.JobService;
 
 import org.springframework.http.ResponseEntity;
@@ -16,19 +20,42 @@ import java.util.UUID;
 public class JobController {
 
     private final JobService jobService;
+    private final CompanyService companyService;
 
-    public JobController(JobService jobService) {
+    public JobController(JobService jobService, CompanyService companyService) {
         this.jobService = jobService;
+        this.companyService = companyService;
     }
 
     @GetMapping
-    public List<Job> getAllJobs() {
-        return jobService.getAllJobs();
+    public ResponseEntity<List<JobResponse>> getAllJobs() {
+        List<Job> jobs = jobService.getAllJobs();
+        List<JobResponse> response = jobs.stream()
+                .map(JobResponse::new)
+                .toList();
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<Job> createJob(@RequestBody Job job) {
+    public ResponseEntity<Job> createJob(@RequestBody JobRequest request) {
+        Company company = companyService.findById(request.companyId);
+        if (company == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Job job = new Job();
+        job.setTitle(request.title);
+        job.setDescription(request.description);
+        job.setResponsibilities(request.responsibilities);
+        job.setQualifications(request.qualifications);
+        job.setLocation(request.location);
+        job.setSalaryMin(request.salaryMin);
+        job.setSalaryMax(request.salaryMax);
+        job.setType(request.type);
+        job.setExperienceLevel(request.experienceLevel);
         job.setPostedAt(LocalDateTime.now());
+        job.setCompany(company);
+
         Job savedJob = jobService.createJob(job);
         return ResponseEntity.ok(savedJob);
     }
@@ -51,4 +78,9 @@ public class JobController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/company/{companyId}")
+    public ResponseEntity<List<Job>> getJobsByCompany(@PathVariable UUID companyId) {
+        List<Job> jobs = jobService.getJobsByCompanyId(companyId);
+        return ResponseEntity.ok(jobs);
+    }
 }

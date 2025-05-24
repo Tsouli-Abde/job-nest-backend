@@ -1,5 +1,6 @@
 package com.dauphine.jobnest.controllers;
 
+import com.dauphine.jobnest.dto.ApplicantUpdate;
 import com.dauphine.jobnest.dto.LoginRequest;
 import com.dauphine.jobnest.models.Applicant;
 import com.dauphine.jobnest.services.ApplicantService;
@@ -46,27 +47,30 @@ public class ApplicantController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Applicant> updateApplicant(@PathVariable UUID id, @RequestBody Applicant updatedApplicant) {
+    @PutMapping(value = "/{id}", consumes = "application/json")
+    public ResponseEntity<Applicant> updateApplicant(@PathVariable UUID id, @RequestBody ApplicantUpdate dto) {
         Applicant existing = applicantService.findById(id);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
 
-        if (updatedApplicant.getFirstName() != null)
-            existing.setFirstName(updatedApplicant.getFirstName());
-        if (updatedApplicant.getLastName() != null)
-            existing.setLastName(updatedApplicant.getLastName());
-        if (updatedApplicant.getEmail() != null)
-            existing.setEmail(updatedApplicant.getEmail());
-        if (updatedApplicant.getPhoneNumber() != null)
-            existing.setPhoneNumber(updatedApplicant.getPhoneNumber());
-        if (updatedApplicant.getSkills() != null)
-            existing.setSkills(updatedApplicant.getSkills());
-        if (updatedApplicant.getUsername() != null)
-            existing.setUsername(updatedApplicant.getUsername());
+        if (dto.firstName != null) existing.setFirstName(dto.firstName);
+        if (dto.lastName != null) existing.setLastName(dto.lastName);
+        if (dto.email != null) existing.setEmail(dto.email);
+        if (dto.phoneNumber != null) existing.setPhoneNumber(dto.phoneNumber);
+        if (dto.skills != null) existing.setSkills(dto.skills);
+        if (dto.username != null) existing.setUsername(dto.username);
+        if (dto.password != null) existing.setPassword(dto.password);
 
         return ResponseEntity.ok(applicantService.save(existing));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Applicant> getApplicantById(@PathVariable UUID id) {
+        Applicant applicant = applicantService.findById(id);
+        if (applicant == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(applicant);
+    }
 }

@@ -66,4 +66,16 @@ public class ApplicationController {
         return ResponseEntity.ok(exists);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Application> getApplicationById(@PathVariable UUID id) {
+        return applicationService.getById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/job/{jobId}")
+    public ResponseEntity<List<Application>> getByJob(@PathVariable UUID jobId) {
+        List<Application> applications = applicationService.getByJobId(jobId);
+        return ResponseEntity.ok(applications);
+    }
 }

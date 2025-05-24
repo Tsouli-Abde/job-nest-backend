@@ -1,6 +1,7 @@
 package com.dauphine.jobnest.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -27,5 +28,11 @@ public class ApplicationService {
     public boolean existsByApplicantIdAndJobId(UUID applicantId, UUID jobId) {
         return applicationRepository.existsByApplicantIdAndJobId(applicantId, jobId);
     }
-    
+    public Optional<Application> getById(UUID id) {
+        return applicationRepository.findById(id);
+    }
+
+    public List<Application> getByJobId(UUID jobId) {
+        return applicationRepository.findByJobId(jobId);
+    }
 }

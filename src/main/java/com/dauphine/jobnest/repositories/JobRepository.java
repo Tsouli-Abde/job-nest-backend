@@ -23,4 +23,5 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
             @Param("salaryMin") Integer salaryMin,
             @Param("salaryMax") Integer salaryMax);
 
+    List<Job> findByCompanyId(UUID companyId);
 }

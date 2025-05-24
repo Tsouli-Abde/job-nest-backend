@@ -1,8 +1,11 @@
 package com.dauphine.jobnest.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "job")
@@ -44,7 +47,12 @@ public class Job {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
+    @JsonBackReference
     private Company company;
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Application> applications = new ArrayList<>();
 
     public Job() {}
     public UUID getId() {
@@ -141,6 +149,14 @@ public class Job {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public List<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
     }
 }
 

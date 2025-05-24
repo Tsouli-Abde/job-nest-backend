@@ -1,4 +1,5 @@
 package com.dauphine.jobnest.models;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.*;
 
@@ -29,6 +30,7 @@ public class Company {
     private String password;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Job> jobs = new ArrayList<>();
 
     public UUID getId() {

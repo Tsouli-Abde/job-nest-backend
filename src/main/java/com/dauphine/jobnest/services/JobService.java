@@ -35,4 +35,8 @@ public class JobService {
             Integer salaryMax) {
         return jobRepository.findByFilters(location, type, experienceLevel, salaryMin, salaryMax);
     }
+
+    public List<Job> getJobsByCompanyId(UUID companyId) {
+        return jobRepository.findByCompanyId(companyId);
+    }
 }
