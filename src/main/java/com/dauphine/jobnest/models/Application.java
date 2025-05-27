@@ -31,6 +31,18 @@ public class Application {
     @Column(name = "application_date")
     private LocalDateTime applicationDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private ApplicationStatus status = ApplicationStatus.PENDING;
+
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationStatus status) {
+        this.status = status;
+    }
+
     public UUID getId() {
         return id;
     }

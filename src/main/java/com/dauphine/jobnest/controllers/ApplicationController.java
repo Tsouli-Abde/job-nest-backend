@@ -4,15 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.dauphine.jobnest.models.ApplicationStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dauphine.jobnest.dto.ApplicationRequest;
 import com.dauphine.jobnest.models.Applicant;
@@ -77,5 +71,15 @@ public class ApplicationController {
     public ResponseEntity<List<Application>> getByJob(@PathVariable UUID jobId) {
         List<Application> applications = applicationService.getByJobId(jobId);
         return ResponseEntity.ok(applications);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Application> updateStatus(@PathVariable UUID id, @RequestParam ApplicationStatus status) {
+        Application application = applicationService.getById(id).orElse(null);
+        if (application == null) return ResponseEntity.notFound().build();
+
+        application.setStatus(status);
+        applicationService.save(application);
+        return ResponseEntity.ok(application);
     }
 }
