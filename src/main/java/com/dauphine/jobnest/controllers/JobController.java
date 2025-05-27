@@ -83,4 +83,10 @@ public class JobController {
         List<Job> jobs = jobService.getJobsByCompanyId(companyId);
         return ResponseEntity.ok(jobs);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteJob(@PathVariable UUID id) {
+        jobService.deleteJobById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

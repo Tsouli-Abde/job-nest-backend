@@ -39,4 +39,8 @@ public class JobService {
     public List<Job> getJobsByCompanyId(UUID companyId) {
         return jobRepository.findByCompanyId(companyId);
     }
+    
+    public void deleteJobById(UUID id) {
+        jobRepository.deleteById(id);
+    }
 }
