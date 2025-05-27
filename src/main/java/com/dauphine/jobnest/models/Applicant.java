@@ -40,6 +40,9 @@ public class Applicant {
     @JsonBackReference
     private List<Application> applications = new ArrayList<>();
 
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JobExperience> experiences = new ArrayList<>();
+
     public Applicant() {
     }
 
@@ -105,5 +108,13 @@ public class Applicant {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<JobExperience> getExperiences() {
+        return experiences;
+    }
+
+    public void setExperiences(List<JobExperience> experiences) {
+        this.experiences = experiences;
     }
 }

@@ -10,7 +10,6 @@ import java.util.UUID;
 @Table(name = "application")
 public class Application {
 
-    public Application() {}
     @Id
     @GeneratedValue
     private UUID id;
@@ -35,13 +34,7 @@ public class Application {
     @Column(name = "status", nullable = false)
     private ApplicationStatus status = ApplicationStatus.PENDING;
 
-    public ApplicationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ApplicationStatus status) {
-        this.status = status;
-    }
+    public Application() {}
 
     public UUID getId() {
         return id;
@@ -81,5 +74,13 @@ public class Application {
 
     public void setApplicationDate(LocalDateTime applicationDate) {
         this.applicationDate = applicationDate;
+    }
+
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationStatus status) {
+        this.status = status;
     }
 }

@@ -33,6 +33,8 @@ public class Company {
     @JsonManagedReference
     private List<Job> jobs = new ArrayList<>();
 
+    public Company() {}
+
     public UUID getId() {
         return id;
     }

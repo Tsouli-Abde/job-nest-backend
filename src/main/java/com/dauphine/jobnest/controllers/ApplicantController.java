@@ -1,13 +1,18 @@
 package com.dauphine.jobnest.controllers;
 
+import com.dauphine.jobnest.dto.ApplicantRequest;
 import com.dauphine.jobnest.dto.ApplicantUpdate;
+import com.dauphine.jobnest.dto.JobExperienceRequest;
 import com.dauphine.jobnest.dto.LoginRequest;
 import com.dauphine.jobnest.models.Applicant;
+import com.dauphine.jobnest.models.JobExperience;
 import com.dauphine.jobnest.services.ApplicantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,12 +33,34 @@ public class ApplicantController {
         return applicantService.getAllApplicants();
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Applicant> register(@RequestBody Applicant applicant) {
-        System.out.println("Received applicant: " + applicant.getUsername());
-        System.out.println("Password before encode: " + applicant.getPassword());
+    @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Applicant> register(@RequestBody ApplicantRequest request) {
+        System.out.println("Received applicant: " + request.username);
 
-        applicant.setPassword(passwordEncoder.encode(applicant.getPassword()));
+        Applicant applicant = new Applicant();
+        applicant.setFirstName(request.firstName);
+        applicant.setLastName(request.lastName);
+        applicant.setEmail(request.email);
+        applicant.setPhoneNumber(request.phoneNumber);
+        applicant.setSkills(request.skills);
+        applicant.setUsername(request.username);
+        applicant.setPassword(passwordEncoder.encode(request.password));
+
+        if (request.experiences != null) {
+            List<JobExperience> experienceList = new ArrayList<>();
+            for (JobExperienceRequest exp : request.experiences) {
+                JobExperience jobExperience = new JobExperience();
+                jobExperience.setCompanyName(exp.companyName);
+                jobExperience.setPosition(exp.position);
+                jobExperience.setDescription(exp.description);
+                jobExperience.setStartDate(exp.startDate);
+                jobExperience.setEndDate(exp.endDate);
+                jobExperience.setApplicant(applicant);
+                experienceList.add(jobExperience);
+            }
+            applicant.setExperiences(experienceList);
+        }
+
         return ResponseEntity.ok(applicantService.save(applicant));
     }
 

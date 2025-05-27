@@ -28,7 +28,8 @@ public class ApplicantService {
     }
 
     public Applicant findByUsername(String username) {
-        return applicantRepository.findByUsername(username);
+        return applicantRepository.findByUsername(username)
+                .orElse(null);
     }
 }
 
