@@ -23,6 +23,9 @@ public class Company {
     @Column(name = "industry")
     private String industry;
 
+    @Column(name = "website")
+    private String website;
+
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -97,6 +100,14 @@ public class Company {
 
     public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }
 

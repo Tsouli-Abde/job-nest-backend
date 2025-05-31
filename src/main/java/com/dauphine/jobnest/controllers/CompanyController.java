@@ -1,5 +1,6 @@
 package com.dauphine.jobnest.controllers;
 
+import com.dauphine.jobnest.dto.CompanyRequest;
 import com.dauphine.jobnest.dto.CompanyUpdate;
 import com.dauphine.jobnest.dto.LoginRequest;
 import com.dauphine.jobnest.models.Company;
@@ -30,8 +31,15 @@ public class CompanyController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Company> register(@RequestBody Company company) {
-        company.setPassword(passwordEncoder.encode(company.getPassword()));
+    public ResponseEntity<Company> register(@RequestBody CompanyRequest request) {
+        Company company = new Company();
+        company.setCompanyName(request.companyName);
+        company.setEmail(request.email);
+        company.setPhoneNumber(request.phoneNumber);
+        company.setIndustry(request.industry);
+        company.setWebsite(request.website);
+        company.setUsername(request.username);
+        company.setPassword(passwordEncoder.encode(request.password));
         return ResponseEntity.ok(companyService.save(company));
     }
 
