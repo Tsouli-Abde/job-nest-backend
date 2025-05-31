@@ -72,9 +72,9 @@ public class JobController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Job> getJobById(@PathVariable UUID id) {
+    public ResponseEntity<JobResponse> getJobById(@PathVariable UUID id) {
         return jobService.getJobById(id)
-                .map(ResponseEntity::ok)
+                .map(job -> ResponseEntity.ok(new JobResponse(job)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

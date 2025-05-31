@@ -52,12 +52,18 @@ public class CompanyController {
             return ResponseEntity.notFound().build();
         }
 
-        if (dto.companyName != null) existing.setCompanyName(dto.companyName);
-        if (dto.email != null) existing.setEmail(dto.email);
-        if (dto.phoneNumber != null) existing.setPhoneNumber(dto.phoneNumber);
-        if (dto.industry != null) existing.setIndustry(dto.industry);
-        if (dto.username != null) existing.setUsername(dto.username);
-        if (dto.password != null) existing.setPassword(dto.password);
+        if (dto.companyName != null)
+            existing.setCompanyName(dto.companyName);
+        if (dto.email != null)
+            existing.setEmail(dto.email);
+        if (dto.phoneNumber != null)
+            existing.setPhoneNumber(dto.phoneNumber);
+        if (dto.industry != null)
+            existing.setIndustry(dto.industry);
+        if (dto.username != null)
+            existing.setUsername(dto.username);
+        if (dto.password != null)
+            existing.setPassword(dto.password);
 
         return ResponseEntity.ok(companyService.save(existing));
     }
@@ -69,5 +75,14 @@ public class CompanyController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(company.getJobs());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Company> getCompanyById(@PathVariable UUID id) {
+        Company company = companyService.findById(id);
+        if (company == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(company);
     }
 }

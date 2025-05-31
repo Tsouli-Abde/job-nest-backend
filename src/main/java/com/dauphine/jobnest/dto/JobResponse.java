@@ -1,23 +1,26 @@
 package com.dauphine.jobnest.dto;
 
 import com.dauphine.jobnest.models.Job;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Data
 public class JobResponse {
-    public UUID id;
-    public String title;
-    public String description;
-    public String responsibilities;
-    public String qualifications;
-    public String location;
-    public Integer salaryMin;
-    public Integer salaryMax;
-    public String type;
-    public String experienceLevel;
-    public LocalDateTime postedAt;
-    public UUID companyId;
-    public int numberOfApplicants;
+    private UUID id;
+    private String title;
+    private String description;
+    private String responsibilities;
+    private String qualifications;
+    private String location;
+    private Integer salaryMin;
+    private Integer salaryMax;
+    private String type;
+    private String experienceLevel;
+    private LocalDateTime postedAt;
+    private UUID companyId;
+    private String companyName;
 
     public JobResponse(Job job) {
         this.id = job.getId();
@@ -31,7 +34,12 @@ public class JobResponse {
         this.type = job.getType();
         this.experienceLevel = job.getExperienceLevel();
         this.postedAt = job.getPostedAt();
-        this.companyId = job.getCompany() != null ? job.getCompany().getId() : null;
-        this.numberOfApplicants = job.getApplications() != null ? job.getApplications().size() : 0;
+
+        if (job.getCompany() != null) {
+            this.companyName = job.getCompany().getCompanyName();
+            this.companyId = job.getCompany().getId();
+        } else {
+            this.companyName = "Unknown Company";
+        }
     }
 }
