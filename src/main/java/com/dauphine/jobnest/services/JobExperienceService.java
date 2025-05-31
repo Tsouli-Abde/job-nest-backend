@@ -25,7 +25,7 @@ public class JobExperienceService {
         return jobExperienceRepository.findAll();
     }
 
-    public Optional<JobExperience> getById(Long id) {
+    public Optional<JobExperience> getById(UUID id) {
         return jobExperienceRepository.findById(id);
     }
 

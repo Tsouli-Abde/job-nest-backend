@@ -39,7 +39,7 @@ public class JobExperienceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getExperienceById(@PathVariable Long id) {
+    public ResponseEntity<?> getExperienceById(@PathVariable UUID id) {
         return jobExperienceService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
