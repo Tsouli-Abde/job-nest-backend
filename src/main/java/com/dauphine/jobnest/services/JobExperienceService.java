@@ -32,4 +32,8 @@ public class JobExperienceService {
     public List<JobExperience> getByApplicantId(UUID applicantId) {
         return jobExperienceRepository.findByApplicantId(applicantId);
     }
+
+    public void deleteById(UUID id) {
+        jobExperienceRepository.deleteById(id);
+    }
 }
