@@ -61,14 +61,18 @@ public class JobController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<Job>> searchJobs(
+    public ResponseEntity<List<JobResponse>> searchJobs(
             @RequestParam(required = false) String location,
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String experienceLevel,
             @RequestParam(required = false) Integer salaryMin,
             @RequestParam(required = false) Integer salaryMax) {
-        List<Job> results = jobService.searchJobs(location, type, experienceLevel, salaryMin, salaryMax);
-        return ResponseEntity.ok(results);
+
+        List<Job> jobs = jobService.searchJobs(location, type, experienceLevel, salaryMin, salaryMax);
+        List<JobResponse> jobResponses = jobs.stream()
+                .map(JobResponse::new)
+                .toList();
+        return ResponseEntity.ok(jobResponses);
     }
 
     @GetMapping("/{id}")
