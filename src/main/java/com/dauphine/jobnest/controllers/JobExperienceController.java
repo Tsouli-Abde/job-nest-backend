@@ -5,6 +5,9 @@ import com.dauphine.jobnest.models.Applicant;
 import com.dauphine.jobnest.models.JobExperience;
 import com.dauphine.jobnest.services.ApplicantService;
 import com.dauphine.jobnest.services.JobExperienceService;
+
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.dauphine.jobnest.dto.JobExperienceUpdate;
@@ -25,6 +28,10 @@ public class JobExperienceController {
     }
 
     @PostMapping("/applicant/{applicantId}")
+    @Operation(
+        summary = "Add a job experience to an applicant", 
+        description = "Creates a new job experience and assigns it to the specified applicant"    
+    )
     public ResponseEntity<?> addExperienceToApplicant(
             @PathVariable UUID applicantId,
             @RequestBody JobExperienceRequest experienceDto) {
@@ -46,11 +53,19 @@ public class JobExperienceController {
     }
 
     @GetMapping
+    @Operation(
+        summary = "Retrieve all job experiences",
+        description = "Returns a list of all job experiences in the system"
+    )
     public ResponseEntity<List<JobExperience>> getAllExperiences() {
         return ResponseEntity.ok(jobExperienceService.getAll());
     }
 
     @GetMapping("/{id}")
+    @Operation(
+        summary = "Retrieve a job experience by ID",
+        description = "Returns a single job experience based on its unique identifier"
+    )
     public ResponseEntity<?> getExperienceById(@PathVariable UUID id) {
         return jobExperienceService.getById(id)
                 .map(ResponseEntity::ok)
@@ -58,11 +73,19 @@ public class JobExperienceController {
     }
 
     @GetMapping("/applicant/{applicantId}")
+    @Operation(
+        summary = "Get experiences by applicant ID",
+        description = "Retrieves all job experiences for the specified applicant"
+    )
     public ResponseEntity<List<JobExperience>> getExperiencesByApplicant(@PathVariable UUID applicantId) {
         return ResponseEntity.ok(jobExperienceService.getByApplicantId(applicantId));
     }
 
     @PutMapping("/{id}")
+    @Operation(
+        summary = "Update an existing job experience",
+        description = "Updates the details of a job experience with the specified ID"
+    )
     public ResponseEntity<?> updateExperience(@PathVariable UUID id, @RequestBody JobExperienceUpdate updated) {
         return jobExperienceService.getById(id)
                 .map(existing -> {
@@ -77,6 +100,10 @@ public class JobExperienceController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(
+        summary = "Delete a job experience",
+        description = "Deletes a job experience based on its ID"
+    )
     public ResponseEntity<?> deleteExperience(@PathVariable UUID id) {
         return jobExperienceService.getById(id)
                 .map(exp -> {

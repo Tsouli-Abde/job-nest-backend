@@ -7,6 +7,8 @@ import com.dauphine.jobnest.models.Job;
 import com.dauphine.jobnest.services.CompanyService;
 import com.dauphine.jobnest.services.JobService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,10 @@ public class JobController {
     }
 
     @GetMapping
+    @Operation(
+        summary = "Get all job listings",
+        description = "Returns a list of all available jobs with detailed information"
+    )
     public ResponseEntity<List<JobResponse>> getAllJobs() {
         List<Job> jobs = jobService.getAllJobs();
         List<JobResponse> response = jobs.stream()
@@ -37,6 +43,10 @@ public class JobController {
     }
 
     @PostMapping
+    @Operation(
+        summary = "Create a new job listing",
+        description = "Allows a company to create and post a new job offer"
+    )
     public ResponseEntity<Job> createJob(@RequestBody JobRequest request) {
         Company company = companyService.findById(request.companyId);
         if (company == null) {
@@ -61,6 +71,10 @@ public class JobController {
     }
 
     @GetMapping("/filter")
+    @Operation(
+        summary = "Search jobs with filters",
+        description = "Retrieves jobs that match specified filtering criteria such as location, type, salary range, etc."
+    )
     public ResponseEntity<List<JobResponse>> searchJobs(
             @RequestParam(required = false) String location,
             @RequestParam(required = false) String type,
@@ -76,6 +90,10 @@ public class JobController {
     }
 
     @GetMapping("/{id}")
+    @Operation(
+        summary = "Get job by ID",
+        description = "Retrieves detailed information about a specific job offer"
+    )
     public ResponseEntity<JobResponse> getJobById(@PathVariable UUID id) {
         return jobService.getJobById(id)
                 .map(job -> ResponseEntity.ok(new JobResponse(job)))
@@ -83,12 +101,20 @@ public class JobController {
     }
 
     @GetMapping("/company/{companyId}")
+    @Operation(
+        summary = "Get jobs by company",
+        description = "Lists all jobs posted by a specific company"
+    )
     public ResponseEntity<List<Job>> getJobsByCompany(@PathVariable UUID companyId) {
         List<Job> jobs = jobService.getJobsByCompanyId(companyId);
         return ResponseEntity.ok(jobs);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(
+        summary = "Delete a job posting",
+        description = "Removes a job posting based on its unique ID"
+    )
     public ResponseEntity<Void> deleteJob(@PathVariable UUID id) {
         jobService.deleteJobById(id);
         return ResponseEntity.noContent().build();

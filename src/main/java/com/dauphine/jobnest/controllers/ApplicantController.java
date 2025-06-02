@@ -7,6 +7,9 @@ import com.dauphine.jobnest.dto.LoginRequest;
 import com.dauphine.jobnest.models.Applicant;
 import com.dauphine.jobnest.models.JobExperience;
 import com.dauphine.jobnest.services.ApplicantService;
+
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,11 +32,19 @@ public class ApplicantController {
     }
 
     @GetMapping
+    @Operation(
+        summary = "Get all applicants",
+        description = "Returns a list of all users registered as job applicants"
+    )
     public List<Applicant> getAllApplicants() {
         return applicantService.getAllApplicants();
     }
 
     @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+    @Operation(
+        summary = "Register a new applicant",
+        description = "Creates a new applicant profile with optional job experiences"
+    )
     public ResponseEntity<Applicant> register(@RequestBody ApplicantRequest request) {
         System.out.println("Received applicant: " + request.username);
 
@@ -65,6 +76,10 @@ public class ApplicantController {
     }
 
     @PostMapping("/login")
+    @Operation(
+        summary = "Authenticate applicant",
+        description = "Logs in an applicant using username and password"
+    )
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         Applicant applicant = applicantService.findByUsername(request.getUsername());
         if (applicant != null && passwordEncoder.matches(request.getPassword(), applicant.getPassword())) {
@@ -75,6 +90,10 @@ public class ApplicantController {
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
+    @Operation(
+        summary = "Update applicant profile",
+        description = "Modifies the profile details of an applicant"
+    )
     public ResponseEntity<Applicant> updateApplicant(@PathVariable UUID id, @RequestBody ApplicantUpdate dto) {
         Applicant existing = applicantService.findById(id);
         if (existing == null) {
@@ -93,6 +112,10 @@ public class ApplicantController {
     }
 
     @GetMapping("/{id}")
+    @Operation(
+        summary = "Get applicant by ID",
+        description = "Returns detailed profile information of an applicant"
+    )
     public ResponseEntity<Applicant> getApplicantById(@PathVariable UUID id) {
         Applicant applicant = applicantService.findById(id);
         if (applicant == null) {
