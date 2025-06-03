@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.dauphine.jobnest.dto.ApplicationRequest;
+import com.dauphine.jobnest.dto.ApplicationResponse;
 import com.dauphine.jobnest.models.Applicant;
 import com.dauphine.jobnest.models.Application;
 import com.dauphine.jobnest.models.Job;
@@ -57,9 +58,13 @@ public class ApplicationController {
         summary = "Get applications by applicant",
         description = "Returns all job applications submitted by the specified applicant"
     )
-    public ResponseEntity<List<Application>> getByApplicant(@PathVariable UUID applicantId) {
-        List<Application> applications = applicationService.getByApplicantId(applicantId);
-        return ResponseEntity.ok(applications);
+    public ResponseEntity<List<ApplicationResponse>> getApplicationsByApplicant(@PathVariable UUID applicantId) {
+        List<Application> apps = applicationService.getByApplicantId(applicantId);
+        List<ApplicationResponse> response = apps.stream()
+                .map(ApplicationResponse::new)
+                .toList();
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/has-applied")
