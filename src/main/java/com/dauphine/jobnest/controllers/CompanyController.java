@@ -120,4 +120,10 @@ public class CompanyController {
         }
         return ResponseEntity.ok(company);
     }
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> checkUsername(@RequestParam String username) {
+        Company existing = companyService.findByUsername(username);
+        return ResponseEntity.ok(existing == null);
+    }
 }

@@ -123,4 +123,12 @@ public class ApplicantController {
         }
         return ResponseEntity.ok(applicant);
     }
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> checkUsername(@RequestParam String username) {
+        boolean isAvailable = applicantService.getAllApplicants().stream()
+                .noneMatch(applicant -> applicant.getUsername().equalsIgnoreCase(username));
+        return ResponseEntity.ok(isAvailable);
+    }
+
 }
