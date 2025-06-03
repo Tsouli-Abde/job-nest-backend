@@ -10,4 +10,5 @@ public class CompanyUpdate {
     public String industry;
     public String username;
     public String password;
+    public String website;
 }

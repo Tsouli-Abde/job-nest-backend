@@ -87,6 +87,8 @@ public class CompanyController {
             existing.setPhoneNumber(dto.phoneNumber);
         if (dto.industry != null)
             existing.setIndustry(dto.industry);
+        if (dto.website != null)
+            existing.setWebsite(dto.website);
         if (dto.username != null)
             existing.setUsername(dto.username);
         if (dto.password != null)
